@@ -16,9 +16,11 @@ The collection uses Postman environment variables to make API requests more conv
 1. Obtain your API Key from FullStory per [documentation](https://help.fullstory.com/hc/en-us/articles/360020624834-Where-can-I-find-my-API-key-). Copy this to your clipboard.
 2. In Postman, click the **Manage Environments** button on the far right. (It looks like a cog.)
 3. Click the **Add** button to add a new environment and provide an **Environment Name**.
-4. Create an **Variable** named `API_KEY`. Set the **Initial Value** to be your API Key you copied from step 1.
+4. Create a **Variable** named `API_KEY`. Set the **Initial Value** to be your API Key you copied from step 1.
 
-As needed, add other environment variables such as `USER_ID`, `USER_EMAIL`. Some environment variables like `EXPORT_ID` or `OPERATION_ID` are automatically assigned for convenience. You can update any environment variable, for example `START`, by editing the **Current Value** in environment variables.
+As needed, add other environment variables such as `USER_ID` or `USER_EMAIL`. You'll see these variables used in request URLs, for example `{{USER_EMAIL}}`. If the variable is red in color, it is not yet set.
+
+Some environment variables like `EXPORT_ID` or `OPERATION_ID` are automatically assigned for convenience. You can update any environment variable, for example `START`, by editing the **Current Value** in environment variables.
 
 ## Sample Usage
 
