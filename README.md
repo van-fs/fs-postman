@@ -6,7 +6,7 @@ Just getting started with [FullStory REST APIs](https://developer.fullstory.com/
 
 1. Download [Postman](https://www.getpostman.com/downloads/).
 2. In Postman, click the **Import** button and then the **Import From Link** tab.
-3. Enter the URL `` in the textbox.
+3. Enter the URL `https://raw.githubusercontent.com/van-fs/fs-postman/master/FullStory.postman_collection.json` in the textbox.
 4. Click the **Import** button.
 
 ## Configuration
