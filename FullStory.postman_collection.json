@@ -1,0 +1,581 @@
+{
+	"info": {
+		"_postman_id": "9bb80825-7d50-45bd-aed8-16b2bf125f2e",
+		"name": "FullStory",
+		"description": "FullStory captures and replays your users' experiences so that you can build a better website. You can shape FullStory to your specific needs using our secure HTTP API.\n\nThe HTTP API allows you to control user data and export all event data captured by FullStory for external analysis.\n\nFor more information, see https://developer.fullstory.com/introduction.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "05a34dd5-4ea8-4154-9e3e-a2f1da13a174",
+								"exec": [
+									"pm.test(\"Get a User\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.uid).to.eql(USER_ID);",
+									"    pm.environment.set(\"USER_ID\", jsonData.uid);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic {{API_KEY}}",
+								"type": "text"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "User-Agent",
+								"value": "fs-postman/1.0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://api.{{BASE_URL}}/users/v1/individual/{{USER_ID}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"users",
+								"v1",
+								"individual",
+								"{{USER_ID}}"
+							]
+						},
+						"description": "Get data about users who have been identified in the browser via the FS.identify Browser API function."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Operation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "05a34dd5-4ea8-4154-9e3e-a2f1da13a174",
+								"exec": [
+									"pm.test(\"Get details about a specific operation\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.state).to.not.be.empty;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Basic {{API_KEY}}"
+							},
+							{
+								"key": "content-type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"value": "fs-postman/1.0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://api.{{BASE_URL}}/operations/v1/{{OPERATION_ID}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"operations",
+								"v1",
+								"{{OPERATION_ID}}"
+							]
+						},
+						"description": "Return the status of one particular operation given the operation ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "05a34dd5-4ea8-4154-9e3e-a2f1da13a174",
+								"exec": [
+									"pm.test(\"Delete a User\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.not.be.empty;",
+									"    pm.environment.set(\"OPERATION_ID\", jsonData.id);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Basic {{API_KEY}}"
+							},
+							{
+								"key": "content-type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"value": "fs-postman/1.0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://api.{{BASE_URL}}/users/v1/individual/{{USER_ID}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"users",
+								"v1",
+								"individual",
+								"{{USER_ID}}"
+							]
+						},
+						"description": "Delete all user data related to a user identified in the browser via the FS.identify Browser API function. This includes sessions, events and custom user variables, as well as all of the raw page files and any corresponding session data on our servers.\n\nThis call kicks off a background operation and returns immediately with an operation ID that you can use to query the status of the deletion using the Get Operation HTTP API endpoint."
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Session",
+			"item": [
+				{
+					"name": "Get Sessions (by UID)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "05a34dd5-4ea8-4154-9e3e-a2f1da13a174",
+								"exec": [
+									"pm.test(\"Get Sessions\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonData = pm.response.json();",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Basic {{API_KEY}}"
+							},
+							{
+								"key": "content-type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"value": "fs-postman/1.0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://www.{{BASE_URL}}/api/v1/sessions?uid={{USER_ID}}",
+							"protocol": "https",
+							"host": [
+								"www",
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"sessions"
+							],
+							"query": [
+								{
+									"key": "uid",
+									"value": "{{USER_ID}}"
+								}
+							]
+						},
+						"description": "Return a list of session replay URLs for a given user’s email address or uid who has been identified in the browser via the FS.identify JavaScript API function."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Sessions (by email)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "05a34dd5-4ea8-4154-9e3e-a2f1da13a174",
+								"exec": [
+									"pm.test(\"Get Sessions\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonData = pm.response.json();",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Basic {{API_KEY}}"
+							},
+							{
+								"key": "content-type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"value": "fs-postman/1.0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://www.{{BASE_URL}}/api/v1/sessions?uid={{USER_ID}}&email={{USER_EMAIL}}",
+							"protocol": "https",
+							"host": [
+								"www",
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"sessions"
+							],
+							"query": [
+								{
+									"key": "uid",
+									"value": "{{USER_ID}}"
+								},
+								{
+									"key": "email",
+									"value": "{{USER_EMAIL}}"
+								}
+							]
+						},
+						"description": "Return a list of session replay URLs for a given user’s email address or uid who has been identified in the browser via the FS.identify JavaScript API function."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Sessions (by both)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "05a34dd5-4ea8-4154-9e3e-a2f1da13a174",
+								"exec": [
+									"pm.test(\"Get Sessions\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonData = pm.response.json();",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Basic {{API_KEY}}"
+							},
+							{
+								"key": "content-type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"value": "fs-postman/1.0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://www.{{BASE_URL}}/api/v1/sessions?email={{USER_EMAIL}}",
+							"protocol": "https",
+							"host": [
+								"www",
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"sessions"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "{{USER_EMAIL}}"
+								}
+							]
+						},
+						"description": "Return a list of session replay URLs for a given user’s email address or uid who has been identified in the browser via the FS.identify JavaScript API function.\n\nSpecifying both uid and email query string parameters will return the union of matches for a given uid or email."
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Export",
+			"item": [
+				{
+					"name": "List Data Exports",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "05a34dd5-4ea8-4154-9e3e-a2f1da13a174",
+								"exec": [
+									"pm.test(\"Return a list of Data Export bundles\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    ",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.exports).to.not.be.empty;",
+									"    ",
+									"    // the following code will increment to the first bundle so that it can be used with Get Data Export",
+									"    var id = jsonData.exports[0].Id;",
+									"    var stop = jsonData.exports[0].Stop;",
+									"    ",
+									"    pm.environment.set(\"EXPORT_ID\", id);",
+									"    pm.environment.set(\"START\", stop);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "7ffe4ea7-543e-40d8-b9fd-77766a382ffa",
+								"exec": [
+									"var start = pm.variables.get(\"START\");",
+									"",
+									"// START has not been set by the user",
+									"if (start === undefined || start === '') {",
+									"    var hours = 36; // lookback this many hours",
+									"    pm.environment.set(\"START\", ((Date.now()/1000) - (3600 * hours)).floor());",
+									"}",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Basic {{API_KEY}}"
+							},
+							{
+								"key": "content-type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"value": "fs-postman/1.0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://export.{{BASE_URL}}/api/v1/export/list?start={{START}}",
+							"protocol": "https",
+							"host": [
+								"export",
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"export",
+								"list"
+							],
+							"query": [
+								{
+									"key": "start",
+									"value": "{{START}}"
+								}
+							]
+						},
+						"description": "You can download a collection of session events for your own analysis using FullStory's Data Export feature.\n\nThe list endpoint returns a JSON list of completed data export bundles. Each result provides a start and stop timestamp of the data contained within the export (in unix seconds) as well as the unique ID of the bundle.\n\nCalling this endpoint will return a list of the first 20 data export bundles whose end time is after the given start parameter (sorted from oldest to newest). In general, periodically calling this endpoint with the timestamp of your most recently downloaded bundle will ensure that your system is aware of all finished bundles. If you need to download more than 20 bundles, then simply repeat the call using the timestamp of the last bundle in the returned list.\n\nData Export is an Enterprise pricing tier add-on. See pricing page for more details."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Data Export",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "05a34dd5-4ea8-4154-9e3e-a2f1da13a174",
+								"exec": [
+									"pm.test(\"Download a Data Export bundle\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "7ffe4ea7-543e-40d8-b9fd-77766a382ffa",
+								"exec": [
+									"pm.environment.set(\"START\", Date.now() - 3600 * 24);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Basic {{API_KEY}}"
+							},
+							{
+								"key": "User-Agent",
+								"value": "fs-postman/1.0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://export.{{BASE_URL}}/api/v1/export/get?id={{EXPORT_ID}}",
+							"protocol": "https",
+							"host": [
+								"export",
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"export",
+								"get"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{EXPORT_ID}}"
+								}
+							]
+						},
+						"description": "You can download a collection of session events for your own analysis using FullStory's Data Export feature.\n\nThe get endpoint allows you to download a specific data export bundle given its ID. Our servers will respond with the bytes composing a gzipped JSON document of the request data.\n\nIf your client obeys the Content-Disposition header, then the downloaded file will automatically be called DataExport.json.gz. Otherwise, simply ensure that the response is treated as a gzip.\n\nData Export is an Enterprise pricing tier add-on. See pricing page for more details."
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "52e83298-fc3c-4703-b4d8-e2567c195780",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "d0169f34-48cf-4f39-aefb-c9d1b3266107",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "0410f18a-1fc6-441a-b3de-9b9817e72510",
+			"key": "BASE_URL",
+			"value": "fullstory.com",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
