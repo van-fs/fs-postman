@@ -253,7 +253,7 @@
 					"response": []
 				},
 				{
-					"name": "Get Sessions (by email)",
+					"name": "Get Sessions (by both)",
 					"event": [
 						{
 							"listen": "test",
@@ -314,12 +314,12 @@
 								}
 							]
 						},
-						"description": "Return a list of session replay URLs for a given user’s email address or uid who has been identified in the browser via the FS.identify JavaScript API function."
+						"description": "Return a list of session replay URLs for a given user’s email address or uid who has been identified in the browser via the FS.identify JavaScript API function.\n\nSpecifying both uid and email query string parameters will return the union of matches for a given uid or email."
 					},
 					"response": []
 				},
 				{
-					"name": "Get Sessions (by both)",
+					"name": "Get Sessions (by email)",
 					"event": [
 						{
 							"listen": "test",
@@ -477,6 +477,166 @@
 					"response": []
 				},
 				{
+					"name": "Get User Pages",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "05a34dd5-4ea8-4154-9e3e-a2f1da13a174",
+								"exec": [
+									"pm.test(\"Get a user's visited pages\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "7ffe4ea7-543e-40d8-b9fd-77766a382ffa",
+								"exec": [
+									"var start = pm.variables.get(\"START\");",
+									"",
+									"// START has not been set by the user",
+									"if (start === undefined || start === '') {",
+									"    var hours = 36; // lookback this many hours",
+									"    pm.environment.set(\"START\", ((Date.now()/1000) - (3600 * hours)).floor());",
+									"}",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Basic {{API_KEY}}"
+							},
+							{
+								"key": "content-type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"type": "text",
+								"value": "fs-postman/1.0"
+							}
+						],
+						"url": {
+							"raw": "https://export.{{BASE_URL}}/api/v1/export/userPages?uid={{USER_ID}}",
+							"protocol": "https",
+							"host": [
+								"export",
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"export",
+								"userPages"
+							],
+							"query": [
+								{
+									"key": "uid",
+									"value": "{{USER_ID}}"
+								}
+							]
+						},
+						"description": "The User Pages file contains a series of all the pages that the user has visited, including the raw event data recorded on each page."
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Events",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "05a34dd5-4ea8-4154-9e3e-a2f1da13a174",
+								"exec": [
+									"pm.test(\"Get a user's recorded events\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "7ffe4ea7-543e-40d8-b9fd-77766a382ffa",
+								"exec": [
+									"var start = pm.variables.get(\"START\");",
+									"",
+									"// START has not been set by the user",
+									"if (start === undefined || start === '') {",
+									"    var hours = 36; // lookback this many hours",
+									"    pm.environment.set(\"START\", ((Date.now()/1000) - (3600 * hours)).floor());",
+									"}",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Basic {{API_KEY}}"
+							},
+							{
+								"key": "content-type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"type": "text",
+								"value": "fs-postman/1.0"
+							}
+						],
+						"url": {
+							"raw": "https://export.{{BASE_URL}}/api/v1/export/userEvents?uid={{USER_ID}}",
+							"protocol": "https",
+							"host": [
+								"export",
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"export",
+								"userEvents"
+							],
+							"query": [
+								{
+									"key": "uid",
+									"value": "{{USER_ID}}"
+								}
+							]
+						},
+						"description": "The User Events file contains event data that FullStory has recorded for a particular user. User Events are in the same format as the data retrieved from the Get Data Export HTTP API endpoint, but limited to an individual user rather than all users.\n\nThe data included in User Events are the \"indexed\" (high-level) events that you can search and view in FullStory. For lower-level \"raw\" event data, see the Get User Pages HTTP API endpoint."
+					},
+					"response": []
+				},
+				{
 					"name": "Get Data Export",
 					"event": [
 						{
@@ -571,7 +731,7 @@
 	],
 	"variable": [
 		{
-			"id": "0410f18a-1fc6-441a-b3de-9b9817e72510",
+			"id": "94eb0788-b7cd-4d5e-99f9-6e753bba47fb",
 			"key": "BASE_URL",
 			"value": "fullstory.com",
 			"type": "string"
